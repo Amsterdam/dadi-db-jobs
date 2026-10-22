@@ -1,0 +1,7 @@
+amsterdam-schema-tools==9.10.1
+azure-identity
+azure-storage-blob
+backoff
+requests
+zipfly
+django-environ

@@ -1,0 +1,6 @@
+/.env
+/scratch
+/.secrets
+
+.python-version
+/__pycache__
