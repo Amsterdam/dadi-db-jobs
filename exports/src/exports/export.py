@@ -8,11 +8,7 @@ from azure.storage.blob import BlobServiceClient
 from schematools.exports import export
 from sqlalchemy import create_engine
 
-# can only import from relative path when running as a module, so fall back on absolute import.
-try:
-    from .slack import SlackMessenger
-except ImportError:
-    from slack import SlackMessenger
+from .slack import SlackMessenger
 
 PGHOST = os.environ["PGHOST"]
 PGDATABASE = os.environ["PGDATABASE"]

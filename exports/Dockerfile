@@ -1,42 +1,40 @@
-FROM python:3.11-slim-trixie AS builder
+FROM ghcr.io/astral-sh/uv:python3.14-trixie-slim AS builder
 
-RUN apt update && apt install --no-install-recommends -y \
+ENV UV_COMPILE_BYTECODE=1 \
+    UV_LINK_MODE=copy
+
+RUN apt-get update && apt-get install --no-install-recommends -y \
     build-essential \
     libgeos-dev \
-    libpq-dev
+    libpq-dev \
+    && rm -rf /var/lib/apt/lists/*
 
-COPY requirements.txt ./
-RUN python -m pip install -r requirements.txt
+WORKDIR /app
+COPY pyproject.toml uv.lock ./
+COPY src/ ./src/
+RUN uv sync --locked --no-dev --no-editable
 
-# Start runtime image,
-FROM python:3.11-slim-trixie
-RUN useradd -U -r datadiensten -d /app
+FROM ghcr.io/astral-sh/uv:python3.14-trixie-slim
 
-# Copy python build artifacts from builder image
-COPY --from=builder /usr/bin/ /usr/bin/
-COPY --from=builder /usr/local/bin/ /usr/local/bin/
-COPY --from=builder /usr/local/lib/ /usr/local/lib/
-COPY --from=builder /usr/local/lib/python3.11/site-packages/ /usr/local/lib/python3.11/site-packages/
-
-
-# Does not work if installed in the builder step.
-RUN apt update && apt install --no-install-recommends -y \
+RUN apt-get update && apt-get install --no-install-recommends -y \
     libpq5 \
     gdal-bin \
     curl \
     zip \
     jq \
-    netcat
+    netcat-openbsd \
+    && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
-RUN mkdir tmp
-RUN chown -R datadiensten: /app
+RUN useradd -U -r datadiensten -d /app && \
+    mkdir tmp && \
+    chown -R datadiensten: /app
 
-COPY export.py ./
-COPY slack.py ./
-COPY update_azure_search.py ./
-COPY split_files.sh ./
+COPY --from=builder --chown=datadiensten:datadiensten /app/.venv /app/.venv
+COPY --chown=datadiensten:datadiensten split_files.sh ./
 RUN chmod +x split_files.sh
 
+ENV PATH="/app/.venv/bin:$PATH"
+
 USER datadiensten
-CMD ["python",  "export.py"]
+CMD ["python", "-m", "exports.export"]

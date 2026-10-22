@@ -27,11 +27,7 @@ from schematools.types import (
 )
 from sqlalchemy import Engine, create_engine
 
-# can only import from relative path when running as a module, so fall back on absolute import.
-try:
-    from .slack import SlackMessenger
-except ImportError:
-    from slack import SlackMessenger
+from .slack import SlackMessenger
 
 env = environ.Env()
 
