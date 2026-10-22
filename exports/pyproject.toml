@@ -33,6 +33,18 @@ dev = [
 [tool.uv.build-backend]
 module-name = "exports"
 
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "--cov=exports --cov-branch --cov-report=term-missing"
+
+[tool.coverage.run]
+source = ["exports"]
+branch = true
+
+[tool.coverage.report]
+show_missing = true
+fail_under = 90
+
 
 [tool.ty.rules]
 all = "warn"
