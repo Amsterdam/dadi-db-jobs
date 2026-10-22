@@ -32,3 +32,10 @@ dev = [
 
 [tool.uv.build-backend]
 module-name = "exports"
+
+
+[tool.ty.rules]
+all = "warn"
+
+[tool.ty.terminal]
+error-on-warning = false
