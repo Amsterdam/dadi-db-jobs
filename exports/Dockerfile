@@ -31,8 +31,6 @@ RUN useradd -U -r datadiensten -d /app && \
     chown -R datadiensten: /app
 
 COPY --from=builder --chown=datadiensten:datadiensten /app/.venv /app/.venv
-COPY --chown=datadiensten:datadiensten split_files.sh ./
-RUN chmod +x split_files.sh
 
 ENV PATH="/app/.venv/bin:$PATH"
 
