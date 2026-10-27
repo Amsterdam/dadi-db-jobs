@@ -25,9 +25,9 @@ dev = [
     "pytest-cov==7.1.0",
     "pytest-sugar==1.1.1",
     "requests-mock==1.12.1",
-    "ruff==0.17.0",
+    "ruff==0.17.2",
     "termcolor==3.3.0",
-    "ty>=0.0.69",
+    "ty>=0.0.91",
 ]
 
 [tool.uv.build-backend]
