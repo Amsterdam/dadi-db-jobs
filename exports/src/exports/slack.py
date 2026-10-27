@@ -51,7 +51,9 @@ class SlackMessenger:
             prefix = f"✅ *[{ENVIRONMENT}] {self.script_name} success!*"
             do_send = REPORT_SUCCESS_TO_SLACK
         if do_send:
-            logger.info(f"Sending slack message: {prefix} {foldout_title}: {message_text}")
+            logger.info(
+                f"Sending slack message: {prefix} {foldout_title}: {message_text}"
+            )
             return requests.post(
                 SLACK_WEBHOOK_URL,
                 headers={"Content-type": "application/json"},
@@ -73,16 +75,16 @@ class SlackMessenger:
                             "child_blocks": [
                                 {
                                     "type": "section",
-                                    "text": {
-                                        "type": "plain_text",
-                                        "text": message
-                                    }
-                                } for message in messages
-                            ]
+                                    "text": {"type": "plain_text", "text": message},
+                                }
+                                for message in messages
+                            ],
                         },
                     ]
                 },
             )
         else:
-            logger.info(f"Not sending slack message: {prefix} {foldout_title}: {message_text}")
+            logger.info(
+                f"Not sending slack message: {prefix} {foldout_title}: {message_text}"
+            )
             return
