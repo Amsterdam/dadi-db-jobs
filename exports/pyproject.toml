@@ -7,14 +7,14 @@ name = "dadi-db-exports"
 version = "0.1.0"
 requires-python = ">=3.14"
 dependencies = [
-    "amsterdam-schema-tools==9.10.1",
+    "amsterdam-schema-tools==9.14.4",
     "azure-identity==1.26.0",
     "azure-storage-blob==12.31.0",
     "backoff==2.2.1",
     "django-environ==0.14.0",
-    "psycopg==3.3.4",
+    "psycopg==3.3.6",
     "requests==2.34.2",
-    "SQLAlchemy==2.0.50",
+    "SQLAlchemy==2.0.55",
     "zipfly==6.0.5",
 ]
 
