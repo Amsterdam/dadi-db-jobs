@@ -3,9 +3,7 @@ import gc
 import json
 import logging
 import os
-import shutil
 import sys
-import time
 import traceback
 import urllib
 from collections.abc import Callable
@@ -116,8 +114,8 @@ def bag_transform(record):
         record["latitude"] = record["verblijfsobjectGeometrie"]["coordinates"][1]
     except (KeyError, TypeError):
         record["latitude"] = None
-    for field in nullable_fields:
-        record[field] = record[field] if record[field] else []
+    for field_name in nullable_fields:
+        record[field_name] = record[field_name] if record[field_name] else []
     return record
 
 
@@ -184,6 +182,7 @@ SEARCH_ENDPOINTS = {
         transform=hr_transform,
     ),
 }
+
 
 class SearchAPI:
     def __init__(
@@ -410,7 +409,7 @@ def upload_file_to_index(file_name, endpoint, index_name, batch_size=BATCH_SIZE)
                 f"indexes('{index_name}')/docs/search.index", {"value": data}
             )
             logger.info(
-                f"Upload batch {batch_count+1} to {index_name}: {response.status_code} {response.reason}"
+                f"Upload batch {batch_count + 1} to {index_name}: {response.status_code} {response.reason}"
             )
         uploaded_doc_count = batch_count * batch_size + count
         logger.info(
@@ -541,7 +540,6 @@ def run(selected_endpoints):
         messenger.send_slack_message(compound_message, status=compound_status)
 
 
-
 if __name__ == "__main__":
     logger.info("Exporting")
     selected_endpoints = [SELECT_ENDPOINT] if SELECT_ENDPOINT else None
@@ -562,6 +560,7 @@ if __name__ == "__main__":
     except Exception as e:
         logger.error(traceback.format_exc())
         messenger.send_slack_message(
-            [f"Importing data into Azure Search failed. Error: {e}"], status=SlackMessenger.Status.FAILURE
+            [f"Importing data into Azure Search failed. Error: {e}"],
+            status=SlackMessenger.Status.FAILURE,
         )
     gc.collect()
