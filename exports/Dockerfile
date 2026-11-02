@@ -30,9 +30,9 @@ RUN useradd -U -r datadiensten -d /app && \
     mkdir tmp && \
     chown -R datadiensten: /app
 
-COPY --from=builder --chown=datadiensten:datadiensten /app/.venv /app/.venv
+COPY --from=builder --chown=datadiensten:datadiensten /app /app
 
 ENV PATH="/app/.venv/bin:$PATH"
 
 USER datadiensten
-CMD ["python", "-m", "exports.export"]
+CMD ["uv", "run", "--locked", "-m", "exports.export"]
