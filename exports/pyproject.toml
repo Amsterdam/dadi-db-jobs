@@ -7,7 +7,7 @@ name = "dadi-db-exports"
 version = "0.1.0"
 requires-python = ">=3.14"
 dependencies = [
-    "amsterdam-schema-tools==9.14.5",
+    "amsterdam-schema-tools==9.14.6",
     "azure-identity==1.27.0",
     "azure-storage-blob==12.31.1",
     "backoff==2.2.1",
@@ -25,9 +25,9 @@ dev = [
     "pytest-cov==7.1.0",
     "pytest-sugar==1.1.1",
     "requests-mock==1.12.1",
-    "ruff==0.17.3",
+    "ruff==0.17.4",
     "termcolor==3.3.0",
-    "ty>=0.0.95",
+    "ty>=0.0.99",
 ]
 
 [tool.uv.build-backend]
